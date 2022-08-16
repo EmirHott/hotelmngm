@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Hotel</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background: lightblue">
+    <div class="container-fluid">
+        <a class="navbar-brand">Hotel</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/managerpanel}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/sectors}" >Sectors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/sectortype}" >Sector Types</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/rooms}" >Rooms</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/roomtype}" >Room Type</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/employeepanel}" >Employee panel</a>
+                </li>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-link">
+                        <a th:href="@{/logout}" style="margin-right: 20px">Logout</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="table-responsive">
+    <table id="example" class="datatable" data-mdb-striped="true" data-mdb-bordered="true" data-mdb-sm="true">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Role</th>
+            <th scope="col">Sector</th>
+        </tr>
+        </thead>
+        <tbody th:each="user:${userList}">
+        <tr>
+            <td th:text="${user.getId()}" ></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getSurname()}"></td>
+            <td th:text="${user.getRoleId().getName()}"></td>
+            <td th:text="${user.getSectorId().getTypeId().getName()}"></td>
+        </tr>
+    </table>
+</div>
+
+<h4>Find username :</h4>
+<form class="d-flex p-3 bg-light w-50" method="post" th:action="@{/managerusersearch}">
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="finduser">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+</div>
+
+
+<!Finded user here!>
+<div style="margin: 20px" th:object="${findeduser}">
+    <form class="p-3 bg-light" method="post" action="">
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">User Id</label>
+            <div class="col-sm-2">
+                <input name="userid" type="text" class="form-control" th:value="${findeduser?.getId()}" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-2">
+                <input name="username" type="text" class="form-control" th:value="${findeduser?.getUsername()}" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-2">
+                <input name="name" type="text" class="form-control" th:value="${findeduser?.getName()}" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Surname</label>
+            <div class="col-sm-2">
+                <input name="surname" type="text" class="form-control" th:value="${findeduser?.getSurname()}" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-6">
+                <input name="password" type="text" class="form-control" th:value="${findeduser?.getPassword()}"readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Sector</label>
+            <div class="col-sm-6">
+                <input name="sector" type="text" class="form-control" th:value="${findeduser?.getSectorId()}" >
+            </div>
+        </div>
+        <fieldset class="row mb-3">
+
+            <legend class="col-form-label col-sm-2 pt-0">Privilege</legend>
+            <div class="col-sm-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="privilegeradio" th:value="${findeduser?.getRoleId()}"  checked readonly>
+                    <label class="form-check-label" th:text="${findeduser?.getRoleId()}"></label>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <button  type="submit" class="btn btn-primary" onclick="form.action = '/manageredituser';">Edit</button>
+    </form>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').dataTable();
+    });
+</script>
+
+
+
+</body>
+</html>
